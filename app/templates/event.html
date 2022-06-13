@@ -24,10 +24,13 @@
     {% endfor %}
 {% endif %}
 
-<form method="post">
+
+<form method="POST">
   {% csrf_token %}
   <table class="form form-table">
     {{ form }}
+
+    {% if can_submit %}
     <tr>
       <td colspan="2">
         <button type="submit" class="btn btn-info right">
@@ -35,6 +38,20 @@
         </button>
       </td>
     </tr>
+    {% endif %}
+
   </table>
 </form>
+
+{% if can_delete %}
+<form action="{% url 'event_delete' event_id=event_id %}" method="get" class="clearfix">
+    <button type="submit" class="btn btn-info left">
+      Delete
+    </button>
+</form>
+{% endif %}
+
+<br>
+<br>
+
 {% endblock %}

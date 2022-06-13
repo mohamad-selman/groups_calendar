@@ -1,10 +1,13 @@
 from calendar import HTMLCalendar
 from .models import Event
 
+# Compose HTML code for calendar
 class Calendar(HTMLCalendar):
-    def __init__(self, year=None, month=None):
+    def __init__(self, year=None, month=None, user=None):
         self.year = year
         self.month = month
+        self.user = user
+
         super(Calendar, self).__init__()
 
     # Days as columns: <td>DAY</td>
@@ -46,10 +49,22 @@ class Calendar(HTMLCalendar):
     def formatmonth(self, withyear=True):
 
         # filter events by year and month
-        events = Event.objects.filter(
+        public_events = Event.objects.filter(
             start_time__year = self.year,
-            start_time__month = self.month
+            start_time__month = self.month,
+            private = False
         )
+
+        private_events = Event.objects.filter(
+            start_time__year = self.year,
+            start_time__month = self.month,
+            private = True,
+            participants = self.user
+        )
+
+        # Public Events + Private events that user is participating in
+        events = public_events | private_events
+        events = events.distinct()
 
         month_table = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         month_table += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
