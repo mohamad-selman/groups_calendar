@@ -29,6 +29,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://*.127.0.0.1',
+    'http://*.20.249.56.46',
+    'http://*.20.196.199.199',
+    'http://*.20.214.184.178',
+    'http://*.groupcal.tech',
+]
 
 # Application definition
 
