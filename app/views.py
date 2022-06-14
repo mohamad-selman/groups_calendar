@@ -118,7 +118,8 @@ def event(request, event_id=None):
         can_submit = (is_owner | is_group_member).exists()
         can_delete = is_owner.exists()
 
-    form = EventForm(request.POST or None, instance=instance)
+    form = EventForm(request.POST or None, instance=instance, initial={'owner': request.user.id})
+
     if request.POST and form.is_valid():
         form.save() # Create new event
         return HttpResponseRedirect(reverse('calendar')) # Redirect to the calendar

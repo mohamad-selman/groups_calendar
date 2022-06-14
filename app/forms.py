@@ -1,6 +1,7 @@
 from django.forms import ModelForm, DateInput
 from app.models import Event
 from django.core.exceptions import ValidationError
+from django import forms
 
 # The event form
 class EventForm(ModelForm):
@@ -10,6 +11,7 @@ class EventForm(ModelForm):
     widgets = {
       'start_time': DateInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
       'end_time': DateInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+      'owner' : forms.HiddenInput(),
     }
 
     fields = '__all__'
@@ -19,6 +21,8 @@ class EventForm(ModelForm):
 
     self.fields['start_time'].input_formats = ('%Y-%m-%dT%H:%M',)
     self.fields['end_time'].input_formats = ('%Y-%m-%dT%H:%M',)
+
+    print(self.initial)
 
   # Validate that no two events overlaps
   def clean(self):

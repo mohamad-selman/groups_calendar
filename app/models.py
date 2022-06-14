@@ -29,6 +29,9 @@ class Event(models.Model):
     def clean(self):
         if self.start_time > self.end_time:
             raise ValidationError('Start time is after end time')
+        if self.start_time == self.end_time:
+            raise ValidationError('Start and end time are at the same time')
+
 
     # Returns URL of the event
     @property
@@ -49,3 +52,4 @@ class Event(models.Model):
                 name="endtime_CHK"
             )
         ]
+
